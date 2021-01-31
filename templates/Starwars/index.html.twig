@@ -1,0 +1,137 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div id="container" class="row">
+  <nav class="nav-extended white pushpin z-depth-3">
+    <div class="nav-wrapper ">
+      <div class="row">
+        <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large red-text text-red"><i
+            class="material-icons">menu</i></a>
+        <ul class="side-nav white darken-2" id="mobile-demo">
+          <li class="sidenav-header blue">
+            <div class="row">
+              <div class="col s12">
+                <img
+                  src="https://www.coledecore.com.br/wp-content/uploads/2017/10/947_iwantyoudarthvader_foto_g_20161021181028.png"
+                  width="148px" height="148px" alt="" class="circle responsive-img valign profile-image">
+              </div>
+              <div class="col s12 ">
+                <ul>
+                  <li class="white"><a href="/" class="waves-effect waves-blue"><i
+                        class="material-icons">home</i>Início</a></li>
+                  <li class="white"><a href="/list" class="waves-effect waves-blue"><i
+                        class="material-icons">workspaces</i> Death Star's team</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <form action="/search" id="formSearch" class="browser-default right">
+          <input id="search-input" placeholder="Search" type="text" class="browser-default search-field" name="name"
+            autocomplete="off" aria-label="Search box" value="{{valueSearch}}">
+          <label for="search-input"><a><i class="material-icons search-icon">search</i></a></label>
+          {% if search|length > 0 %}
+          <div class="search-popup">
+            <div class="search-content">
+              <label class="search-heading">Sugestões</label>
+              <ul class="popup-list">
+                {% for user in search %}
+                <li class=""><a class="grey-text" href="/detail?url={{user.url}}">{{user.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="container">
+      <div class="section"></div>
+      <div class="section">
+        <div class="row">
+          <div class="col l6 m8 s12">
+            {% if detail|length > 0 %}
+            <ul class="collapsible" data-collapsible="accordion">
+              <li>
+                <div class="collapsible-header active"><i class="material-icons">account_circle</i>{{detail['name']}}
+                </div>
+                <div class="collapsible-body white">
+                  <span>Altura: {{detail['height']}} cm</span><br>
+                  <span>Peso: {{detail['weight']}} kg's</span>
+                </div>
+              </li>
+              <li>
+                <div class="collapsible-header active"><i class="material-icons">local_movies</i>Filmes</div>
+                <div class="collapsible-body white">
+                  <ul>
+                    {% for movie in detail['movies'] %}
+                    <li>
+                      {{movie['name']}}
+                    </li><br>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <div class="collapsible-header active"><i class="material-icons">whatshot</i>Recrutar</div>
+                <div class="collapsible-body white center">
+                  <span class="center-text text-center ">
+                    <form action="/save" id="formSave">
+                      <input name="person" type="hidden" value="{{detail['url']}}">
+                      <a href="#" onclick="document.getElementById('formSave').submit();"
+                        class="btn-floating btn-large cyan pulse">
+                        <i class="material-icons">edit</i></a>
+                    </form>
+                  </span>
+                </div>
+              </li>
+            </ul>
+            {% elseif results|length > 0 %}
+            <table class="striped centered">
+              <thead class="black white-text">
+                <th>Nome</th>
+                <th>Ações</th>
+              </thead>
+              <tbody class="white">
+                {% for person in results %}
+                <tr>
+                  <td>{{person.name}}</td>
+                  <td>
+                    <a href="/detail?url={{person.url}}" class="btn-floating  blue pulse">
+                      <i class="large material-icons">mode_edit</i>
+                    </a>
+                    <a href="/delete?url={{person.url}}" class="btn-floating  red pulse">
+                      <i class="large material-icons">delete</i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+
+            {% else %}
+
+            <h2 class="white-text text-darken-1">Work in a place like
+              <span class="blue-text">G</span><span class="red-text">o</span><span class="amber-text">o</span><span
+                class="blue-text">g</span><span class="green-text">l</span><span class="red-text">e</span>
+            </h2>
+          </div>
+          <div class="col s12">
+            <p class="white-text text-darken-2">
+              Become a stormtrooper and conquer the universe
+              <br>
+              (Shooting classes not included)
+            </p>
+          </div>
+
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% endblock %}
