@@ -14,14 +14,16 @@ StarWarsAPI requires Symfony, Node.js and a Mysql database to run.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
+$ git clone https://github.com/JoaoPauloHenriqueSiqueira/starlist.git starwars
 $ cd starWarsAPI
+$ composer install
 $ php bin/console doctrine:database:create
 $ php bin/console make:migration
+$ php bin/console doctrine:migrations:migrate
+$ npm install
 $ npm run watch
 $ npm run build
 ```
-
-
 
 Put the database information in .ENV
 ```sh
