@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\People;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method People|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,8 +15,28 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PeopleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
+
+    private $entityManager;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->entityManager = $entityManager;
         parent::__construct($registry, People::class);
+    }
+
+    public function save($name, $url)
+    {
+        try {
+            $people = new People();
+            $people->setName($name);
+            $people->setUrl($url);
+            $this->entityManager->persist($people);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            $e = $this->logErrorApi($e);
+            return $e;
+        }
     }
 }

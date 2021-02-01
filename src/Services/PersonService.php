@@ -6,7 +6,6 @@ use App\Library\SwapiPlugin;
 use App\Transform\PersonTransformer;
 use App\Transform\DetailTransformer;
 use App\Repository\PeopleRepository;
-use App\Entity\People;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PersonService
@@ -71,12 +70,8 @@ class PersonService
             ['url' => $url]
         );
 
-        if (!$find) {
-            $people = new People();
-            $people->setName($name);
-            $people->setUrl($url);
-            $this->entityManager->persist($people);
-            $this->entityManager->flush();
+        if (!$find && $url && $name) {
+            $this->repository->save($name, $url);
         }
 
         return;

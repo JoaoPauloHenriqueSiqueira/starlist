@@ -90,12 +90,12 @@ class HomeController extends AbstractController
     public function save(Request $request)
     {
         $url = $request->query->get('person');
+        
         if ($url == "") {
             return $this->redirectToRoute('index');
         }
 
         $this->service->save($url);
-
         return $this->redirectToRoute('list');
     }
 
